@@ -6,11 +6,11 @@ function formatarCampoMoeda(el) {
         let parteInteira = v.slice(0, primeiraVirgula).replace(/^0+(?=\d)/, '');
         let parteDecimal = v.slice(primeiraVirgula + 1).replace(/,/g, '').slice(0, 2);
         if (parteInteira === '') parteInteira = '0';
-        el.value = Number(parteInteira).toLocaleString('pt-PT') + ',' + parteDecimal;
+        el.value = Number(parteInteira).toLocaleString('pt-PT', { useGrouping: true }) + ',' + parteDecimal;
     } else {
         v = v.replace(/^0+(?=\d)/, '');
         if (v === '') { el.value = ''; return; }
-        el.value = Number(v).toLocaleString('pt-PT');
+        el.value = Number(v).toLocaleString('pt-PT', { useGrouping: true });
     }
 }
 
@@ -152,12 +152,16 @@ function apto_irt(valor){
 }
 
 function formatarKz(valor) {
-    return (valor || 0).toLocaleString('pt-PT', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' AOA';
+    return (valor || 0).toLocaleString('pt-PT', { 
+        minimumFractionDigits: 2, 
+        maximumFractionDigits: 2, 
+        useGrouping: true 
+    }) + ' AOA';
 }
 
 function render() {
     document.getElementById('res_salario_liquido').innerHTML =
-        (dados.salario_liquido || 0).toLocaleString('pt-PT', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) +
+        (dados.salario_liquido || 0).toLocaleString('pt-PT', { minimumFractionDigits: 2, maximumFractionDigits: 2, useGrouping: true  }) +
         ' <span>AOA</span>';
 
     const pct = dados.salario_total > 0 ? (dados.salario_liquido / dados.salario_total) * 100 : 0;
